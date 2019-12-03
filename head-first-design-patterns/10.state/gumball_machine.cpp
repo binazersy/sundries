@@ -20,14 +20,15 @@ void GumballMachine::initialize(unsigned balls)
 	_hasQuarterState.reset();
 	_soldState.reset();
 
-	_soldOutState = std::make_shared<SoldOutState>(shared_from_this());
-	_noQuarterState = std::make_shared<NoQuarterState>(shared_from_this());
-	_hasQuarterState = std::make_shared<HasQuarterState>(shared_from_this());
-	_soldState = std::make_shared<SoldState>(shared_from_this());
+	_soldOutState = std::make_unique<SoldOutState>(this);
+	_noQuarterState = std::make_unique<NoQuarterState>(this);
+	_hasQuarterState = std::make_unique<HasQuarterState>(this);
+	_soldState = std::make_unique<SoldState>(this);
 
-	_state.reset();
 	if (balls > 0)
-		_state = _noQuarterState;
+		_state = _noQuarterState.get();
+	else
+		_state = _soldOutState.get();
 }
 
 
@@ -48,32 +49,27 @@ void GumballMachine::turnCrank()
 	_state->dispense();
 }
 
-void GumballMachine::setState(std::shared_ptr<State>& state)
+void GumballMachine::setState(std::unique_ptr<State>& state)
 {
-	_state = state;
+	_state = state.get();
 }
 
-std::shared_ptr<State>& GumballMachine::getState()
-{
-	return _state;
-}
-
-std::shared_ptr<State>& GumballMachine::getHasQuarterState()
+std::unique_ptr<State>& GumballMachine::getHasQuarterState()
 {
 	return _hasQuarterState;
 }
 
-std::shared_ptr<State>& GumballMachine::getSoldOutState()
+std::unique_ptr<State>& GumballMachine::getSoldOutState()
 {
 	return _soldOutState;
 }
 
-std::shared_ptr<State>& GumballMachine::getNoQuarterState()
+std::unique_ptr<State>& GumballMachine::getNoQuarterState()
 {
 	return _noQuarterState;
 }
 
-std::shared_ptr<State>& GumballMachine::getSoldState()
+std::unique_ptr<State>& GumballMachine::getSoldState()
 {
 	return _soldState;
 }

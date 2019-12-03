@@ -24,11 +24,10 @@ class GumballMachine;
 class State
 {
 protected:
-	std::shared_ptr<GumballMachine> _machine;
-	//GumballMachine * _machine;
+	GumballMachine* _machine;
 
 public:
-	State() : _machine(nullptr) {}
+	State(GumballMachine* machine) : _machine(machine) {}
 	virtual void insertQuarter() = 0;
 	virtual void ejectQuarter() = 0;
 	virtual void turnCrank() = 0;
@@ -42,8 +41,7 @@ class NoQuarterState : public State
 {
 
 public:
-	//NoQuarterState(GumballMachine* machine);
-	NoQuarterState(std::shared_ptr<GumballMachine>&& machine);
+	NoQuarterState(GumballMachine* machine);
 	~NoQuarterState() { std::cout << "~NoQuarterState()" << std::endl; }
 
 
@@ -75,8 +73,7 @@ public:
 class SoldState : public State
 {
 public:
-	//SoldState(GumballMachine* machine);
-	SoldState(std::shared_ptr<GumballMachine>&& machine);
+	SoldState(GumballMachine* machine);
 
 	void insertQuarter()
 	{
@@ -104,8 +101,7 @@ public:
 class SoldOutState : public State
 {
 public:
-	//SoldOutState(GumballMachine* machine);
-	SoldOutState(std::shared_ptr<GumballMachine>&& machine);
+	SoldOutState(GumballMachine* machine);
 
 	void insertQuarter()
 	{
@@ -140,8 +136,7 @@ public:
 class HasQuarterState : public State
 {
 public:
-	//HasQuarterState(GumballMachine* machine);
-	HasQuarterState(std::shared_ptr<GumballMachine>&& machine);
+	HasQuarterState(GumballMachine* machine);
 
 	void insertQuarter()
 	{

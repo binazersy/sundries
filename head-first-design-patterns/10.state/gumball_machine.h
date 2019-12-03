@@ -18,14 +18,14 @@
 class State;
 
 
-class GumballMachine : public std::enable_shared_from_this<GumballMachine>
+class GumballMachine
 {
-	std::shared_ptr<State> _soldOutState;
-	std::shared_ptr<State> _noQuarterState;
-	std::shared_ptr<State> _hasQuarterState;
-	std::shared_ptr<State> _soldState;
+	std::unique_ptr<State> _soldOutState;
+	std::unique_ptr<State> _noQuarterState;
+	std::unique_ptr<State> _hasQuarterState;
+	std::unique_ptr<State> _soldState;
 
-	std::shared_ptr<State> _state;
+	State*	_state = nullptr;
 	unsigned _count = 0;
 
 public:
@@ -34,12 +34,11 @@ public:
 	void insertQuarter();
 	void ejectQuarter();
 	void turnCrank();
-	void setState(std::shared_ptr<State>& state);
-	std::shared_ptr<State>& getState();
-	std::shared_ptr<State>& getHasQuarterState();
-	std::shared_ptr<State>& getSoldOutState();
-	std::shared_ptr<State>& getNoQuarterState();
-	std::shared_ptr<State>& getSoldState();
+	void setState(std::unique_ptr<State>& state);
+	std::unique_ptr<State>& getHasQuarterState();
+	std::unique_ptr<State>& getSoldOutState();
+	std::unique_ptr<State>& getNoQuarterState();
+	std::unique_ptr<State>& getSoldState();
 
 	void releaseBall();
 	void refill(unsigned count);

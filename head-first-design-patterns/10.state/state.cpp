@@ -11,11 +11,11 @@
 #include "gumball_machine.h"
 
 
-NoQuarterState::NoQuarterState(std::shared_ptr<GumballMachine>&& machine)
+NoQuarterState::NoQuarterState(GumballMachine* machine)
+	: State(machine)
 {
-	_machine = machine;
-	//_machine = std::make_shared<GumballMachine>(*machine);
 }
+
 
 void NoQuarterState::insertQuarter()
 {
@@ -24,10 +24,9 @@ void NoQuarterState::insertQuarter()
 }
 
 
-SoldState::SoldState(std::shared_ptr<GumballMachine>&& machine)
+SoldState::SoldState(GumballMachine* machine)
+	: State(machine)
 {
-	_machine = machine;
-	//_machine = std::make_shared<GumballMachine>(*machine);
 }
 
 
@@ -46,11 +45,11 @@ void SoldState::dispense()
 }
 
 
-SoldOutState::SoldOutState(std::shared_ptr<GumballMachine>&& machine)
+SoldOutState::SoldOutState(GumballMachine* machine)
+	: State(machine)
 {
-	_machine = machine;
-	//_machine = std::make_shared<GumballMachine>(*machine);
 }
+
 
 void SoldOutState::refill()
 {
@@ -58,17 +57,18 @@ void SoldOutState::refill()
 }
 
 
-HasQuarterState::HasQuarterState(std::shared_ptr<GumballMachine>&& machine)
+HasQuarterState::HasQuarterState(GumballMachine* machine)
+	: State(machine)
 {
-	_machine = machine;
-	//_machine = std::make_shared<GumballMachine>(*machine);
 }
+
 
 void HasQuarterState::ejectQuarter()
 {
 	std::cout << "Quarter returned" << std::endl;
 	_machine->setState(_machine->getNoQuarterState());
 }
+
 
 void HasQuarterState::turnCrank()
 {
